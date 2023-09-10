@@ -4,8 +4,17 @@ package brackets;
  */
 public enum BracketType {
 
+	/**
+	 * Curly brackets. {}
+	 */
 	CURLY,
+	/**
+	 * Parentheses. ()
+	 */
 	PARENTHESIS,
+	/**
+	 * Square brackets. []
+	 */
 	SQUARE;
 
 	/** Get the opening bracket.
