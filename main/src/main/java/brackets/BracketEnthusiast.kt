@@ -61,8 +61,7 @@ class BracketEnthusiast(
 		this.closers = if (closeList.isEmpty())
 			null else closeList.toIntArray()
 		areBracketCountsValid = openers?.size == closers?.size
-		areBracketsBalanced = areBracketCountsValid &&
-			areBracketsBalanced()
+		areBracketsBalanced = areBracketsBalanced()
 	}
 
 	/** Determine if the brackets are balanced.
@@ -71,15 +70,15 @@ class BracketEnthusiast(
 	 */
 	private fun areBracketsBalanced()
 		: Boolean {
-		if (openers == null)
-			return closers == null
-		if (closers == null)
+		if (!areBracketCountsValid)
 			return false
+		if (openers == null)
+			return true
 		var openerIndex = 0
 		var closerIndex = 0
 		while (
 			openerIndex < openers.size &&
-			closerIndex < closers.size
+			closerIndex < closers!!.size
 		) {
 			val opener = openers[openerIndex]
 			val closer = closers[closerIndex]
@@ -100,9 +99,10 @@ class BracketEnthusiast(
 	 */
 	fun getBracketPairs(): IntArray? {
 		// Validate Input
-		if (!areBracketCountsValid ||
-			openers == null ||
-			closers == null
+		if (openers == null ||
+			closers == null ||
+			!areBracketCountsValid ||
+			!areBracketsBalanced
 			) return null
 		// Create the Result Array, which will contain pairs of indices.
 		val result = IntArray(openers.size + closers.size)
