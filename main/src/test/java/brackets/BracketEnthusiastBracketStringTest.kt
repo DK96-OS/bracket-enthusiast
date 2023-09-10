@@ -6,36 +6,18 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-/** Testing BracketEnthusiast.
+/** Testing BracketEnthusiast on BracketStrings
  */
-class BracketEnthusiastTest {
+class BracketEnthusiastBracketStringTest {
 
 	private var mInstance: BracketEnthusiast? = null
 
 	private val bracketSample: String = "{{}{}}"
 	private val bracketSample2: String = "{{{}}{}{}}{}"
 
-	private fun getTestProjectFile1(): String = """
-		
-	""".trimIndent()
-
 	@After
 	fun testCleanup() {
 		mInstance = null
-	}
-
-	@Test
-	fun testOpeners_TestProjectFile1_() {
-		mInstance = BracketEnthusiast(
-			BracketType.CURLY,
-			getTestProjectFile1()
-		)
-		val result = mInstance!!.openers
-		assertNotNull(result)
-		assertArrayEquals(
-			intArrayOf(89, 122, 253),
-			result
-		)
 	}
 
 	@Test
@@ -57,20 +39,6 @@ class BracketEnthusiastTest {
 		assertArrayEquals(
 			intArrayOf(0, 1, 2, 5, 7, 10),
 			mInstance!!.openers
-		)
-	}
-
-	@Test
-	fun testClosers_TestProjectFile1_() {
-		mInstance = BracketEnthusiast(
-			BracketType.CURLY,
-			getTestProjectFile1()
-		)
-		val result = mInstance!!.closers
-		assertNotNull(result)
-		assertArrayEquals(
-			intArrayOf(165, 269, 272),
-			result
 		)
 	}
 
@@ -97,17 +65,6 @@ class BracketEnthusiastTest {
 	}
 
 	@Test
-	fun testAreBracketsBalanced_TestProjectFile1_ReturnsTrue() {
-		mInstance = BracketEnthusiast(
-			BracketType.CURLY,
-			getTestProjectFile1()
-		)
-		assertTrue(
-			mInstance!!.areBracketsBalanced
-		)
-	}
-
-	@Test
 	fun testAreBracketsBalanced_BracketSample_ReturnsTrue() {
 		mInstance = BracketEnthusiast(
 			BracketType.CURLY, bracketSample
@@ -125,20 +82,6 @@ class BracketEnthusiastTest {
 		)
 		assertTrue(
 			mInstance!!.areBracketsBalanced
-		)
-	}
-
-	@Test
-	fun testGetBracketPairs_TestProjectFile1_ReturnsCorrectPairs() {
-		mInstance = BracketEnthusiast(
-			BracketType.CURLY,
-			getTestProjectFile1()
-		)
-		val result = mInstance!!.getBracketPairs()
-		assertNotNull(result)
-		assertArrayEquals(
-			intArrayOf(89, 272, 122, 165, 253, 269),
-			result
 		)
 	}
 
