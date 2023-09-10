@@ -1,13 +1,54 @@
 plugins {
     id "kotlin"
     id "jacoco"
+    id "org.jetbrains.dokka" version "1.8.20"
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+    withJavadocJar()
+    withSourcesJar()
 }
 
 dependencies {
     testImplementation libs.junit
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "io.github.dk96-os.bracket-enthusiast"
+            artifactId = "main"
+            version = "1.0"
+            from components.java
+        }
+    }
+}
+
+
+tasks.jacocoTestReport {
+    dependsOn tasks.test
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoReport")
+    }
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn tasks.test
+    violationRules {
+        failOnViolation = true
+        rule {
+            limit {
+                counter = "INSTRUCTION"
+                minimum = 0.96
+            }
+            limit {
+                counter = "BRANCH"
+                minimum = 0.96
+            }
+        }
+    }
 }
