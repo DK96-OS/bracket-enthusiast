@@ -71,8 +71,10 @@ class BracketEnthusiast(
 	 */
 	private fun areBracketsBalanced()
 		: Boolean {
-		val openers = openers!!
-		val closers = closers!!
+		if (openers == null)
+			return closers == null
+		if (closers == null)
+			return false
 		var openerIndex = 0
 		var closerIndex = 0
 		while (
