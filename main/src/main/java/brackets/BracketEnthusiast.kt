@@ -48,7 +48,7 @@ class BracketEnthusiast(
 			} else if (nextClose == -1) {
 				openList.add(nextOpen)
 				nextOpen + 1
-			} else (nextOpen < nextClose) {
+			} else if (nextOpen < nextClose) {
 				openList.add(nextOpen)
 				nextOpen + 1
 			} else {
