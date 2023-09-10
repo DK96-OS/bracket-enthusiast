@@ -1,7 +1,7 @@
 package brackets
 
-import org.junit.After
 import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -9,8 +9,6 @@ import org.junit.Test
 /** Testing BracketEnthusiast on Code Strings.
  */
 class BracketEnthusiastCodeStringTest {
-
-	private var mInstance: BracketEnthusiast? = null
 
 	private val codeStringInput1: String = """
 		package brackets
@@ -37,9 +35,36 @@ class BracketEnthusiastCodeStringTest {
 		BracketType.SQUARE, codeStringInput1
 	)
 
-	@After
-	fun testCleanup() {
-		mInstance = null
+	@Test
+	fun testBracketType_InitialCondition() {
+		assertEquals(
+			BracketType.CURLY,
+			curlyEnthusiast1.bracketType
+		)
+		assertEquals(
+			BracketType.PARENTHESIS,
+			parenthesisEnthusiast1.bracketType
+		)
+		assertEquals(
+			BracketType.SQUARE,
+			squareEnthusiast1.bracketType
+		)
+	}
+
+	@Test
+	fun testInput_InitialCondition() {
+		assertEquals(
+			codeStringInput1,
+			curlyEnthusiast1.input
+		)
+		assertEquals(
+			codeStringInput1,
+			parenthesisEnthusiast1.input
+		)
+		assertEquals(
+			codeStringInput1,
+			squareEnthusiast1.input
+		)
 	}
 
 	@Test
