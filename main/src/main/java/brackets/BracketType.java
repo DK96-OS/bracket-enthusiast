@@ -24,7 +24,7 @@ public enum BracketType {
 		return switch (this) {
 			case CURLY -> '{';
 			case PARENTHESIS -> '(';
-			case SQUARE -> '[';
+			default -> '[';
 		};
 	}
 
@@ -35,7 +35,7 @@ public enum BracketType {
 		return switch (this) {
 			case CURLY -> '}';
 			case PARENTHESIS -> ')';
-			case SQUARE -> ']';
+			default -> ']';
 		};
 	}
 

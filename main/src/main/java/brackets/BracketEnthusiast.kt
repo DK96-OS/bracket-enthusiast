@@ -31,30 +31,27 @@ class BracketEnthusiast(
 	val areBracketsBalanced: Boolean
 
 	init {
-		val openChar = bracketType.open
-		val closeChar = bracketType.close
 		val openList = ArrayList<Int>(4)
 		val closeList = ArrayList<Int>(4)
+		val charArray = charArrayOf(
+			bracketType.open, bracketType.close
+		)
 		var index = 0
 		while (index < input.length) {
-			val nextOpen = input.indexOf(openChar, index)
-			val nextClose = input.indexOf(closeChar, index)
-			if (nextOpen == -1 && nextClose == -1) {
+			val nextBracket = input.indexOfAny(
+				charArray,
+				startIndex = index,
+				ignoreCase = false
+			)
+			if (nextBracket == -1)
 				break
+			// Add the Bracket index to the right list
+			when (input[nextBracket]) {
+				bracketType.open -> openList.add(nextBracket)
+				else -> closeList.add(nextBracket)
 			}
-			index = if (nextOpen == -1) {
-				closeList.add(nextClose)
-				nextClose + 1
-			} else if (nextClose == -1) {
-				openList.add(nextOpen)
-				nextOpen + 1
-			} else if (nextOpen < nextClose) {
-				openList.add(nextOpen)
-				nextOpen + 1
-			} else {
-				closeList.add(nextClose)
-				nextClose + 1
-			}
+			// Update Index
+			index = nextBracket + 1
 		}
 		this.openers = if (openList.isEmpty())
 			null else openList.toIntArray()
