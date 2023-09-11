@@ -48,7 +48,7 @@ class BracketEnthusiast(
 			// Add the Bracket index to the right list
 			when (input[nextBracket]) {
 				bracketType.open -> openList.add(nextBracket)
-				bracketType.close -> closeList.add(nextBracket)
+				else -> closeList.add(nextBracket)
 			}
 			// Update Index
 			index = nextBracket + 1
