@@ -18,7 +18,7 @@ public enum BracketType {
 	SQUARE,
 
 	/**
-	 * Angle brackets. <>
+	 * Angle brackets. Cannot be included in javadoc comments.
 	 */
 	ANGLE;
 
