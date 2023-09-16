@@ -35,6 +35,10 @@ class BracketEnthusiastCodeStringTest {
 		BracketType.SQUARE, codeStringInput1
 	)
 
+	private var angleEnthusiast1 = BracketEnthusiast(
+		BracketType.ANGLE, codeStringInput1
+	)
+
 	@Test
 	fun testBracketType_InitialCondition() {
 		assertEquals(
@@ -48,6 +52,10 @@ class BracketEnthusiastCodeStringTest {
 		assertEquals(
 			BracketType.SQUARE,
 			squareEnthusiast1.bracketType
+		)
+		assertEquals(
+			BracketType.ANGLE,
+			angleEnthusiast1.bracketType
 		)
 	}
 
@@ -64,6 +72,10 @@ class BracketEnthusiastCodeStringTest {
 		assertEquals(
 			codeStringInput1,
 			squareEnthusiast1.input
+		)
+		assertEquals(
+			codeStringInput1,
+			angleEnthusiast1.input
 		)
 	}
 
@@ -89,6 +101,11 @@ class BracketEnthusiastCodeStringTest {
 	}
 
 	@Test
+	fun testOpeners_CodeString1_Angle() {
+		assertNull(angleEnthusiast1.openers)
+	}
+
+	@Test
 	fun testClosers_CodeString1_Curly() {
 		assertArrayEquals(
 			intArrayOf(90, 158, 160),
@@ -107,6 +124,11 @@ class BracketEnthusiastCodeStringTest {
 	@Test
 	fun testClosers_CodeString1_Square() {
 		assertNull(squareEnthusiast1.closers)
+	}
+
+	@Test
+	fun testClosers_CodeString1_Angle() {
+		assertNull(angleEnthusiast1.closers)
 	}
 
 	@Test
@@ -131,6 +153,13 @@ class BracketEnthusiastCodeStringTest {
 	}
 
 	@Test
+	fun testAreBracketsBalanced_CodeString1_Angle_ReturnsTrue() {
+		assertTrue(
+			angleEnthusiast1.areBracketsBalanced
+		)
+	}
+
+	@Test
 	fun testGetBracketPairs_CodeString1_Curly() {
 		assertArrayEquals(
 			intArrayOf(40, 160, 61, 90, 132, 158),
@@ -150,6 +179,13 @@ class BracketEnthusiastCodeStringTest {
 	fun testGetBracketPairs_CodeString1_Square() {
 		assertNull(
 			squareEnthusiast1.getBracketPairs()
+		)
+	}
+
+	@Test
+	fun testGetBracketPairs_CodeString1_Angle() {
+		assertNull(
+			angleEnthusiast1.getBracketPairs()
 		)
 	}
 

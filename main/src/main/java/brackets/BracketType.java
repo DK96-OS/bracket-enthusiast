@@ -15,7 +15,12 @@ public enum BracketType {
 	/**
 	 * Square brackets. []
 	 */
-	SQUARE;
+	SQUARE,
+
+	/**
+	 * Angle brackets. Cannot be included in javadoc comments.
+	 */
+	ANGLE;
 
 	/** Get the opening bracket.
 	 * @return The opening bracket character.
@@ -24,7 +29,8 @@ public enum BracketType {
 		return switch (this) {
 			case CURLY -> '{';
 			case PARENTHESIS -> '(';
-			default -> '[';
+			case SQUARE -> '[';
+			default -> '<';
 		};
 	}
 
@@ -35,7 +41,8 @@ public enum BracketType {
 		return switch (this) {
 			case CURLY -> '}';
 			case PARENTHESIS -> ')';
-			default -> ']';
+			case SQUARE -> ']';
+			default -> '>';
 		};
 	}
 

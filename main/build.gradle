@@ -20,12 +20,11 @@ publishing {
         maven(MavenPublication) {
             groupId = "io.github.dk96-os.bracket-enthusiast"
             artifactId = "main"
-            version = "1.1"
+            version = "1.2"
             from components.java
         }
     }
 }
-
 
 tasks.jacocoTestReport {
     dependsOn tasks.test
