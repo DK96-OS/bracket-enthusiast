@@ -16,5 +16,6 @@ pluginManagement {
 rootProject.name = "bracket-enthusiast"
 include(
 	":main",
+	":nesting",
 )
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
