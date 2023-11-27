@@ -3,6 +3,8 @@ package brackets.nesting;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import mathtools.pairs.IntPairFixed;
 
 /** A Node representing a Pair of Brackets.
@@ -20,11 +22,11 @@ public final class BracketNode
      * @param close The index of the closing bracket.
      */
     BracketNode(
-        int open,
-        int close
+        final int open,
+        final int close
     ) {
         super(open, close);
-        if (close > open && open > -1)
+        if (!(close > open && open > -1))
             throw new IllegalArgumentException(
                 String.format(
                     "Invalid Bracket Pair: %s",
@@ -36,6 +38,7 @@ public final class BracketNode
     /** Obtain any Nodes that are contained within this Node.
      * @return An immutable List of Nodes.
      */
+    @Nullable
     public List<BracketNode> getInternalNodes() {
         return mInternalNodes;
     }
