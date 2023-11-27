@@ -12,7 +12,9 @@ java {
 }
 
 dependencies {
+    apply from: "../dependencies.gradle"
     implementation projects.main
+    implementation mathtools.pairs
 
     testImplementation libs.junit
 }
