@@ -29,6 +29,8 @@ public final class BracketTreeBuilder {
 	public BracketNode[] buildFromEnthusiast(
 		@Nonnull final BracketEnthusiast enthusiast
 	) {
+		// Clear Builder before starting
+		mRoot = null;
 		// Ensure that the Enthusiast contains balanced data
 		if (!enthusiast.getAreBracketsBalanced())
 			return null;
@@ -36,8 +38,7 @@ public final class BracketTreeBuilder {
 		final int[] pairs = enthusiast.getBracketPairs();
 		if (pairs == null)
 			return null;
-		// Clear the builder's root
-		clear();
+		// Record the top Level Nodes
 		var topLevelNodes = new Vector<BracketNode>(2, 2);
 		// Parse the Pairs
 		int index = 0;
@@ -46,15 +47,13 @@ public final class BracketTreeBuilder {
 			if (addNode(pairs[index], pairs[index + 1])) {
 				index += 2; // Next Pair
 			} else {
-				// Pop Root and Try Again
-				topLevelNodes.add(mRoot);
-				clear();
+				topLevelNodes.add(mRoot); // Pop Root and Try Again
+				mRoot = null;
 			}
 		}
-		if (mRoot != null) {
-			topLevelNodes.add(mRoot);
-		}
-		clear();
+		// There's always a root node remaining
+		topLevelNodes.add(mRoot);
+		mRoot = null;
 		return topLevelNodes.toArray(new BracketNode[0]);
 	}
 
