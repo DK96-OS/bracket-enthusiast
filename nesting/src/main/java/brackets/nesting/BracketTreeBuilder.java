@@ -11,11 +11,17 @@ import brackets.BracketEnthusiast;
  */
 public final class BracketTreeBuilder {
 
-	BracketNode root = null;
+	/** The Root Node in the Tree.
+	 */
+	private BracketNode mRoot = null;
 
-	BracketNode recent = null;
+	@Nullable
+	BracketNode getRoot() {
+		return mRoot;
+	}
 
 	/** Build a Top Level Array of Bracket Nodes from an Enthusiast.
+	 * Clears the Builder before and after this operation.
 	 * @param enthusiast The BracketEnthusiast to provide data.
 	 * @return An Array of BracketNode which may be empty, or null if brackets are imbalanced.
 	 */
@@ -32,7 +38,7 @@ public final class BracketTreeBuilder {
 			return null;
 		// Clear the builder's root
 		clear();
-		var topLevelNodes = new Vector<BracketNode>(2, 4);
+		var topLevelNodes = new Vector<BracketNode>(2, 2);
 		// Parse the Pairs
 		int index = 0;
 		while (index < pairs.length) {
@@ -41,12 +47,12 @@ public final class BracketTreeBuilder {
 				index += 2; // Next Pair
 			} else {
 				// Pop Root and Try Again
-				topLevelNodes.add(root);
+				topLevelNodes.add(mRoot);
 				clear();
 			}
 		}
-		if (root != null) {
-			topLevelNodes.add(root);
+		if (mRoot != null) {
+			topLevelNodes.add(mRoot);
 		}
 		clear();
 		return topLevelNodes.toArray(new BracketNode[0]);
@@ -54,6 +60,9 @@ public final class BracketTreeBuilder {
 
 	/** Add A Node to The Builder tree.
 	 * Empty builder accepts any node, sets it to builder root.
+	 * Builder with root tries to add the node anywhere within.
+	 * Returns false if unable to add the nade within the root or it's sub-nodes.
+	 * Modifies the recent member reference to point to the most recently added node.
 	 * @param open  The index of the opening bracket.
 	 * @param close The index of the closing bracket.
 	 * @return Whether the node was successfully added to the builder.
@@ -62,25 +71,19 @@ public final class BracketTreeBuilder {
 		final int open,
 		final int close
 	) {
-		if (root == null) {
-			root = new BracketNode(open, close);
-			recent = root;
+		if (mRoot == null) {
+			// The builder is empty
+			mRoot = new BracketNode(open, close);
 			return true;
 		}
-		if (root == recent) {
-			// todo:
-			return root.addNode(open, close);
-		}
-		// todo:
-		//
-		return false;
+		// Non-empty tree
+		return mRoot.addNode(open, close);
 	}
 
 	/** Reset the Builder references.
 	 */
 	void clear() {
-		root = null;
-		recent = null;
+		mRoot = null;
 	}
 
 }
