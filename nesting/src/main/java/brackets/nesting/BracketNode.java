@@ -2,16 +2,23 @@ package brackets.nesting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
-
-import mathtools.pairs.IntPairFixed;
 
 /** A Node representing a Pair of Brackets.
  * Provides storage of nested Bracket Pairs.
  */
 public final class BracketNode
-    extends IntPairFixed {
+    implements BracketNodeInterface {
+
+    /** The index of the opening bracket.
+     */
+    public final int open;
+
+    /** The index of the closing bracket.
+     */
+    public final int close;
 
     private ArrayList<BracketNode> mInternalNodes = null;
 
@@ -25,7 +32,8 @@ public final class BracketNode
         final int open,
         final int close
     ) {
-        super(open, close);
+        this.open = open;
+        this.close = close;
         if (!(close > open && open > -1))
             throw new IllegalArgumentException(
                 String.format(
@@ -39,17 +47,8 @@ public final class BracketNode
      * @return An immutable List of Nodes.
      */
     @Nullable
-    public List<BracketNode> getInternalNodes() {
+    List<BracketNode> getInternalNodes() {
         return mInternalNodes;
-    }
-
-    /** Determine the number of direct internal nodes.
-     * @return The count of nodes directly inside this node.
-     */
-    public int countInternalNodes() {
-        if (mInternalNodes == null)
-            return 0;
-        return mInternalNodes.size();
     }
 
     /** Add a new Node to the array of direct descendants.
@@ -63,16 +62,98 @@ public final class BracketNode
         final int close
     ) {
         // Validate Nesting within this Node
-        if (!(first < open && close < second))
+        if (!(compareIndex(open) == 0 && compareIndex(close) == 0))
+            return false;
+        if (open == this.open || close == this.close)
             return false;
         // Initialize the Internal Node Array if necessary
-        if (mInternalNodes == null)
+        if (mInternalNodes == null) {
             mInternalNodes = new ArrayList<>(1);
-        // Create and Add the new Node
-        mInternalNodes.add(
-            new BracketNode(open, close)
-        );
+            // Create and Add the new Node
+            mInternalNodes.add(
+                new BracketNode(open, close)
+            );
+            return true;
+        } else {
+            // Search Internal Nodes
+            var node = findNodeContainingIndex(open);
+            if (node == null) {
+                // Create and Add the new Node
+                mInternalNodes.add(
+                    new BracketNode(open, close)
+                );
+            } else {
+                // Add the Node in a Sub-Node
+                return ((BracketNode) node)
+                    .addNode(open, close);
+            }
+        }
         return true;
+    }
+
+    @Override
+    @Nullable
+    public BracketNodeInterface findNodeContainingIndex(
+        final int index
+    ) {
+        // Binary Search
+        int minIndex = 0;
+        int maxIndex = countSubNodes() - 1;
+        //
+        while (minIndex <= maxIndex) {
+            // Compute the midpoint
+            final int searchIndex = minIndex + (maxIndex - minIndex) / 2;
+            // Get the node at the midpoint
+            final BracketNodeInterface node = getSubNodeAt(searchIndex);
+            // Compare the Index with the Node
+            final int comparisonResult = node.compareIndex(index);
+            // The Node matches the index
+            if (comparisonResult == 0) {
+                // Found the Node! Check it's SubNodes
+                return Objects.requireNonNullElse(
+                    node.findNodeContainingIndex(index),
+                    node
+                );
+            } else if (comparisonResult < 0) {
+                // Node is below the position containing the index
+                maxIndex = searchIndex - 1;
+            } else {
+                // Node is above the position containing the index
+                minIndex = searchIndex + 1;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public BracketNodeInterface getSubNodeAt(
+        int index
+    ) {
+        if (mInternalNodes == null)
+            return null;
+        return mInternalNodes.get(index);
+    }
+
+    @Override
+    public int compareIndex(
+        final int index
+    ) {
+        // Less than, returns negative
+        if (open > index)
+            return index - open;
+        // Greater than, positive
+        if (close < index)
+            return index - close;
+        // When the index is contained, return 0
+        return 0;
+    }
+
+    @Override
+    public int countSubNodes() {
+        if (mInternalNodes == null)
+            return 0;
+        return mInternalNodes.size();
     }
 
 }
