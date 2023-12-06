@@ -9,6 +9,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import brackets.BracketEnthusiast;
+import brackets.BracketType;
+
 /** Testing the BracketTree Builder class.
  * The builder is setup with an initial root node.
  */
@@ -32,15 +35,15 @@ public final class BracketTreeBuilderTest {
 	@Test
 	public void testInitialCondition() {
 		assertNotNull(
-			mInstance.root
+			mInstance.getRoot()
 		);
 		assertEquals(
 			openRoot,
-			mInstance.root.open
+			mInstance.getRoot().open
 		);
 		assertEquals(
 			closeRoot,
-			mInstance.root.close
+			mInstance.getRoot().close
 		);
 	}
 
@@ -52,7 +55,7 @@ public final class BracketTreeBuilderTest {
 			)
 		);
 		assertNotNull(
-			mInstance.root
+			mInstance.getRoot()
 		);
 	}
 
@@ -65,7 +68,7 @@ public final class BracketTreeBuilderTest {
 				open, close
 			)
 		);
-		final var root = mInstance.root;
+		final var root = mInstance.getRoot();
 		assertNotNull(root);
 		// Check that the root contain the inner values
 		assertEquals(
@@ -83,10 +86,54 @@ public final class BracketTreeBuilderTest {
 	public void testClear_IsEmpty() {
 		mInstance.clear();
 		assertNull(
-			mInstance.root
+			mInstance.getRoot()
 		);
-		assertNull(
-			mInstance.recent
+	}
+
+	@Test
+	public void testBuildFromEnthusiast_OnePair_ReturnsSingleNodeArray() {
+		final var input = new BracketEnthusiast(
+			BracketType.CURLY, "{ hi }"
+		);
+		final var result = mInstance.buildFromEnthusiast(input);
+		assertNotNull(result);
+		assertEquals(
+			1, result.length
+		);
+		assertEquals(
+			0, result[0].open
+		);
+		assertEquals(
+			5, result[0].close
+		);
+	}
+
+	@Test
+	public void testBuildFromEnthusiast_TwoPairsNested() {
+		final var input = new BracketEnthusiast(
+			BracketType.CURLY, " { { } } "
+		);
+		final var result = mInstance.buildFromEnthusiast(input);
+		assertNotNull(result);
+		assertEquals(
+			1, result.length
+		);
+		final BracketNode outerBracket = result[0];
+		assertEquals(
+			1, outerBracket.open
+		);
+		assertEquals(
+			7, outerBracket.close
+		);
+		assertEquals(
+			1, outerBracket.countSubNodes()
+		);
+		final BracketNode innerBracket = (BracketNode) outerBracket.getSubNodeAt(0);
+		assertEquals(
+			3, innerBracket.open
+		);
+		assertEquals(
+			5, innerBracket.close
 		);
 	}
 
