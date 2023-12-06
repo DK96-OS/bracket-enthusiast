@@ -21,7 +21,7 @@ publishing {
             groupId = "io.github.dk96-os.bracket-enthusiast"
             artifactId = "main"
             apply from: "../artifacts.gradle"
-            version = artifactVersions.nesting
+            version = artifactVersions.main
             from components.java
         }
     }
