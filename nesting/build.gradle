@@ -13,7 +13,6 @@ java {
 dependencies {
     apply from: "../dependencies.gradle"
     implementation projects.main
-    implementation mathtools.pairs
     implementation find_bugs
 
     testImplementation libs.junit
