@@ -4,7 +4,7 @@ buildscript {
         google()
     }
     dependencies {
-    	classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20")
+    	classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.21")
 	}
 }
 
@@ -12,14 +12,6 @@ allprojects {
 	repositories {
 		mavenCentral()
 		google()
-		maven {
-			name = "GitHub Packages"
-			url = "https://maven.pkg.github.com/dk96-os/mathtools/"
-			credentials {
-				username = System.getenv("GITHUB_ACTOR") ?: getProperty("gpr.user")
-				password = System.getenv("GITHUB_TOKEN") ?: getProperty("gpr.key")
-			}
-		}
 	}
 	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 		kotlinOptions {
