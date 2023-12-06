@@ -1,7 +1,6 @@
 plugins {
-    id "kotlin"
+    id "java-library"
     id "jacoco"
-    id "org.jetbrains.dokka"
 }
 
 java {
@@ -12,6 +11,10 @@ java {
 }
 
 dependencies {
+    apply from: "../dependencies.gradle"
+    implementation projects.main
+    implementation find_bugs
+
     testImplementation libs.junit
 }
 
@@ -19,9 +22,9 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = "io.github.dk96-os.bracket-enthusiast"
-            artifactId = "main"
+            artifactId = "nesting"
             apply from: "../artifacts.gradle"
-            version = artifactVersions.main
+            version = artifactVersions.nesting
             from components.java
         }
     }
