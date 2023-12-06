@@ -1,7 +1,6 @@
 package brackets.nesting;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -41,14 +40,6 @@ public final class BracketNode
                     super.toString()
                 )
             );
-    }
-
-    /** Obtain any Nodes that are contained within this Node.
-     * @return An immutable List of Nodes.
-     */
-    @Nullable
-    List<BracketNode> getInternalNodes() {
-        return mInternalNodes;
     }
 
     /** Add a new Node to the array of direct descendants.
