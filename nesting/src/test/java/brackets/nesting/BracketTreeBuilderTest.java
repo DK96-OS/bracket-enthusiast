@@ -137,4 +137,36 @@ public final class BracketTreeBuilderTest {
 		);
 	}
 
+	@Test
+	public void testBuildFromEnthusiast_UnbalancedBrackets_ReturnsNull() {
+		final var input = new BracketEnthusiast(
+			BracketType.CURLY, "{{ } {"
+		);
+		assertNull(
+			mInstance.buildFromEnthusiast(input)
+		);
+	}
+
+	@Test
+	public void testBuildFromEnthusiast_EmptyPairs() {
+		final var input = new BracketEnthusiast(
+			BracketType.CURLY, " hi "
+		);
+		assertNull(
+			mInstance.buildFromEnthusiast(input)
+		);
+	}
+
+	@Test
+	public void testBuildFromEnthusiast_TwoRootLevelPairs_ReturnsArrayLength2() {
+		final var input = new BracketEnthusiast(
+			BracketType.CURLY, " { 1 } { hi } "
+		);
+		final var result = mInstance.buildFromEnthusiast(input);
+		assertNotNull(result);
+		assertEquals(
+			2, result.length
+		);
+	}
+
 }
