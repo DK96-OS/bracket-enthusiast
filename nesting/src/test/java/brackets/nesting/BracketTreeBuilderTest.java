@@ -75,10 +75,10 @@ public final class BracketTreeBuilderTest {
 			1, root.countSubNodes()
 		);
 		assertEquals(
-			open, root.getInternalNodes().get(0).open
+			open, ((BracketNode) root.getSubNodeAt(0)).open
 		);
 		assertEquals(
-			close, root.getInternalNodes().get(0).close
+			close, ((BracketNode) root.getSubNodeAt(0)).close
 		);
 	}
 
