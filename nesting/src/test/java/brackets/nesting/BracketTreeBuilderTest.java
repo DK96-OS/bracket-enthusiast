@@ -36,11 +36,11 @@ public final class BracketTreeBuilderTest {
 		);
 		assertEquals(
 			openRoot,
-			mInstance.root.first
+			mInstance.root.open
 		);
 		assertEquals(
 			closeRoot,
-			mInstance.root.second
+			mInstance.root.close
 		);
 	}
 
@@ -69,13 +69,13 @@ public final class BracketTreeBuilderTest {
 		assertNotNull(root);
 		// Check that the root contain the inner values
 		assertEquals(
-			1, root.countInternalNodes()
+			1, root.countSubNodes()
 		);
 		assertEquals(
-			open, root.getInternalNodes().get(0).first
+			open, root.getInternalNodes().get(0).open
 		);
 		assertEquals(
-			close, root.getInternalNodes().get(0).second
+			close, root.getInternalNodes().get(0).close
 		);
 	}
 
@@ -84,6 +84,9 @@ public final class BracketTreeBuilderTest {
 		mInstance.clear();
 		assertNull(
 			mInstance.root
+		);
+		assertNull(
+			mInstance.recent
 		);
 	}
 

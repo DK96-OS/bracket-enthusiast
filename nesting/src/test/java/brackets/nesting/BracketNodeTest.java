@@ -2,6 +2,7 @@ package brackets.nesting;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -27,16 +28,16 @@ public final class BracketNodeTest {
 	@Test
 	public void testInitialCondition() {
 		assertEquals(
-			open, mInstance.first
+			open, mInstance.open
 		);
 		assertEquals(
-			close, mInstance.second
+			close, mInstance.close
 		);
 		assertNull(
 			mInstance.getInternalNodes()
 		);
 		assertEquals(
-			0, mInstance.countInternalNodes()
+			0, mInstance.countSubNodes()
 		);
 	}
 
@@ -55,17 +56,159 @@ public final class BracketNodeTest {
 			mInstance.addNode(open + 1, close - 1)
 		);
 		assertEquals(
-			1, mInstance.countInternalNodes()
+			1, mInstance.countSubNodes()
 		);
 	}
 
 	@Test
-	public void testAddNode_NotNested_ReturnsFalse() {
+	public void testAddNode_NotNested_Open_ReturnsFalse() {
 		assertFalse(
-			mInstance.addNode(open, close)
+			mInstance.addNode(open - 1, open + 3)
 		);
 		assertEquals(
-			0, mInstance.countInternalNodes()
+			0, mInstance.countSubNodes()
+		);
+	}
+
+	@Test
+	public void testAddNode_NotNested_Close_ReturnsFalse() {
+		assertFalse(
+			mInstance.addNode(open + 3, close + 1)
+		);
+		assertEquals(
+			0, mInstance.countSubNodes()
+		);
+	}
+
+	@Test
+	public void testAddNode_NotNested_MatchesOpen_ReturnsFalse() {
+		assertFalse(
+			mInstance.addNode(open, open + 3)
+		);
+		assertEquals(
+			0, mInstance.countSubNodes()
+		);
+	}
+
+	@Test
+	public void testAddNode_NotNested_MatchesClose_ReturnsFalse() {
+		assertFalse(
+			mInstance.addNode(open + 1, close)
+		);
+		assertEquals(
+			0, mInstance.countSubNodes()
+		);
+	}
+
+	@Test
+	public void testAddNode_TwoNestedInRoot_ReturnsTrue() {
+		assertTrue(
+			mInstance.addNode(open + 1, open + 2)
+		);
+		assertTrue(
+			mInstance.addNode(open + 3, open + 4)
+		);
+		assertEquals(
+			2, mInstance.countSubNodes()
+		);
+	}
+
+	@Test
+	public void testAddNode_TwoNestedDeep_ReturnsTrue() {
+		assertTrue(
+			mInstance.addNode(open + 1, open + 10)
+		);
+		assertTrue(
+			mInstance.addNode(open + 2, open + 4)
+		);
+		assertEquals(
+			1, mInstance.countSubNodes()
+		);
+		assertEquals(
+			1, mInstance.getSubNodeAt(0).countSubNodes()
+		);
+		assertEquals(
+			0, mInstance.getSubNodeAt(0).getSubNodeAt(0).countSubNodes()
+		);
+	}
+
+	@Test
+	public void testAddNode_ThreeNestedDeep_ReturnsTrue() {
+		assertTrue(
+			mInstance.addNode(open + 1, open + 10)
+		);
+		assertTrue(
+			mInstance.addNode(open + 2, open + 8)
+		);
+		assertTrue(
+			mInstance.addNode(open + 4, open + 6)
+		);
+		assertEquals(
+			1, mInstance.countSubNodes()
+		);
+		assertEquals(
+			1, mInstance.getSubNodeAt(0).countSubNodes()
+		);
+		assertEquals(
+			1, mInstance.getSubNodeAt(0).getSubNodeAt(0).countSubNodes()
+		);
+		assertEquals(
+			0, mInstance.getSubNodeAt(0).getSubNodeAt(0).getSubNodeAt(0).countSubNodes()
+		);
+	}
+
+	@Test
+	public void testFindNodeContainingIndex_NoSubNodes_ReturnsNull() {
+		// Check a wide range of indices, both inside and out
+		for (int i = -5; i < close + 5; ++i) {
+			assertNull(
+				mInstance.findNodeContainingIndex(i)
+			);
+		}
+	}
+
+	@Test
+	public void testFindNodeContainingIndex_OneSubNode_IndexWithinSubNode_ReturnsNode() {
+		final int subNodeOpen = open + 3;
+		final int subNodeClose = close - 10;
+		assertTrue(
+			mInstance.addNode(subNodeOpen, subNodeClose)
+		);
+		for (int i = subNodeOpen; i <= subNodeClose; ++i) {
+			final var node = mInstance.findNodeContainingIndex(i);
+			assertNotNull(node);
+			assertTrue(
+				node instanceof BracketNode
+			);
+			assertEquals(
+				subNodeOpen, ((BracketNode) node).open
+			);
+			assertEquals(
+				subNodeClose, ((BracketNode) node).close
+			);
+		}
+	}
+
+	@Test
+	public void testFindNodeContainingIndex_OneSubNode_IndexOutsideSubNode_ReturnsNull() {
+		final int subNodeOpen = open + 3;
+		final int subNodeClose = close - 10;
+		assertTrue(
+			mInstance.addNode(subNodeOpen, subNodeClose)
+		);
+		// Check Below the open index
+		assertNull(
+			mInstance.findNodeContainingIndex(open - 1)
+		);
+		assertNull(
+			mInstance.findNodeContainingIndex(open - 2)
+		);
+		// Check Above the close index
+		assertNull(
+			mInstance.findNodeContainingIndex(close + 1)
+		);
+		assertNull(
+			mInstance.findNodeContainingIndex(close + 2)
 		);
 	}
 
