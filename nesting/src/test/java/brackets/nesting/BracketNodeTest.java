@@ -33,20 +33,39 @@ public final class BracketNodeTest {
 		assertEquals(
 			close, mInstance.close
 		);
-		assertNull(
-			mInstance.getInternalNodes()
+	}
+
+	@Test
+	public void testConstructor_InvalidArguments1_ThrowsException() {
+		// Swap the Arguments, so open is greater than close
+		open = close;
+		close = 10;
+		assertThrows(IllegalArgumentException.class,
+			() -> new BracketNode(open, close)
 		);
+	}
+
+	@Test
+	public void testConstructor_InvalidArguments2_ThrowsException() {
+		// Make open less than zero
+		open = -1;
+		close = 1;
+		assertThrows(IllegalArgumentException.class,
+			() -> new BracketNode(open, close)
+		);
+	}
+
+	@Test
+	public void testCountSubNodes_Empty_ReturnsZero() {
 		assertEquals(
 			0, mInstance.countSubNodes()
 		);
 	}
 
 	@Test
-	public void testSwappedConstructorArgs_ThrowsException() {
-		open = close;
-		close = 10;
-		assertThrows(IllegalArgumentException.class,
-			() -> new BracketNode(open, close)
+	public void testGetSubNodeAt_Empty_ReturnsNull() {
+		assertNull(
+			mInstance.getSubNodeAt(0)
 		);
 	}
 
