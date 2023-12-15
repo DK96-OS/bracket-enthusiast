@@ -67,24 +67,16 @@ class BracketEnthusiast(
 	 */
 	private fun areBracketsBalanced()
 		: Boolean {
+		// Equal size of open and close arrays
 		if (!areBracketCountsValid)
 			return false
+		// If array sizes are zero, is balanced
 		if (openers == null)
 			return true
-		var openerIndex = 0
-		var closerIndex = 0
-		while (
-			openerIndex < openers.size &&
-			closerIndex < closers!!.size
-		) {
-			val opener = openers[openerIndex]
-			val closer = closers[closerIndex]
-			if (opener < closer) {
-				openerIndex++
-				closerIndex++
-			} else {
+		// Balance is ensured when all opens are before the corresponding close
+		for (index in openers.indices) {
+			if (openers[index] > closers!![index])
 				return false
-			}
 		}
 		return true
 	}
