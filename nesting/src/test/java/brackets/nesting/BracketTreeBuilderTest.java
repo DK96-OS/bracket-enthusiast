@@ -169,4 +169,87 @@ public final class BracketTreeBuilderTest {
 		);
 	}
 
+	@Test
+	public void testBuildFromString_OnePair_ReturnsSingleNodeArray() {
+		final var result = mInstance.buildFromString(
+			BracketType.CURLY, "{ hi }"
+		);
+		assertNotNull(result);
+		assertEquals(
+			1, result.length
+		);
+		assertEquals(
+			0, result[0].open
+		);
+		assertEquals(
+			5, result[0].close
+		);
+	}
+
+	@Test
+	public void testBuildFromString_TwoPairsNested() {
+		final var result = mInstance.buildFromString(
+			BracketType.CURLY, " { { } } "
+		);
+		assertNotNull(result);
+		assertEquals(
+			1, result.length
+		);
+		final BracketNode outerBracket = result[0];
+		assertEquals(
+			1, outerBracket.open
+		);
+		assertEquals(
+			7, outerBracket.close
+		);
+		assertEquals(
+			1, outerBracket.countSubNodes()
+		);
+		final BracketNode innerBracket = (BracketNode) outerBracket.getSubNodeAt(0);
+		assertEquals(
+			3, innerBracket.open
+		);
+		assertEquals(
+			5, innerBracket.close
+		);
+	}
+
+	@Test
+	public void testBuildFromString_UnbalancedBrackets_ReturnsNull() {
+		assertNull(
+			mInstance.buildFromString(
+				BracketType.CURLY, "{{ } {"
+			)
+		);
+	}
+
+	@Test
+	public void testBuildFromString_DifferentBracketType_ReturnsNull() {
+		assertNull(
+			mInstance.buildFromString(
+				BracketType.PARENTHESIS, "{{ } {} }"
+			)
+		);
+	}
+
+	@Test
+	public void testBuildFromString_EmptyPairs() {
+		assertNull(
+			mInstance.buildFromString(
+				BracketType.CURLY, " hi "
+			)
+		);
+	}
+
+	@Test
+	public void testBuildFromString_TwoRootLevelPairs_ReturnsArrayLength2() {
+		final var result = mInstance.buildFromString(
+			BracketType.CURLY, " { 1 } { hi } "
+		);
+		assertNotNull(result);
+		assertEquals(
+			2, result.length
+		);
+	}
+
 }
