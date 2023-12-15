@@ -56,6 +56,31 @@ public final class BracketNodeTest {
 	}
 
 	@Test
+	public void testGetIndices() {
+		final var indices = mInstance.getIndices();
+		assertEquals(
+			open, indices[0]
+		);
+		assertEquals(
+			close, indices[1]
+		);
+	}
+
+	@Test
+	public void testGetIndices_AlternateValues() {
+		open = 300;
+		close = 50001;
+		mInstance = new BracketNode(open, close);
+		final var indices = mInstance.getIndices();
+		assertEquals(
+			open, indices[0]
+		);
+		assertEquals(
+			close, indices[1]
+		);
+	}
+
+	@Test
 	public void testCountSubNodes_Empty_ReturnsZero() {
 		assertEquals(
 			0, mInstance.countSubNodes()
