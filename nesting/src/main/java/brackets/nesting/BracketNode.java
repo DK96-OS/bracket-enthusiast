@@ -3,6 +3,7 @@ package brackets.nesting;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** A Node representing a Pair of Brackets.
@@ -80,6 +81,12 @@ public final class BracketNode
             }
         }
         return true;
+    }
+
+    @Nonnull
+    @Override
+    public int[] getIndices() {
+        return new int[]{open, close};
     }
 
     @Override
