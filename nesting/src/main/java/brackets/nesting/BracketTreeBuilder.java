@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import brackets.BracketEnthusiast;
+import brackets.BracketType;
 
 /** The Builder for a Tree of Bracket Nodes.
  */
@@ -55,6 +56,21 @@ public final class BracketTreeBuilder {
 		topLevelNodes.add(mRoot);
 		mRoot = null;
 		return topLevelNodes.toArray(new BracketNode[0]);
+	}
+
+	/** Build a Top Level Array of Bracket Nodes from a String
+	 * @param bracketType The type of Bracket.
+	 * @param input The string input.
+	 * @return An Array of BracketNode, or null if input was invalid.
+	 */
+	@Nullable
+	public BracketNode[] buildFromString(
+		@Nonnull final BracketType bracketType,
+		@Nonnull final String input
+	) {
+		return buildFromEnthusiast(
+			new BracketEnthusiast(bracketType, input)
+		);
 	}
 
 	/** Add A Node to The Builder tree.

@@ -35,7 +35,7 @@ class BracketEnthusiastUnbalancedStringTest {
 		BracketType.CURLY, unbalancedInput3
 	)
 	private var mUnbalanced4 = BracketEnthusiast(
-		BracketType.CURLY, unbalancedInput4
+		BracketType.CURLY, unbalancedInput4.toCharArray()
 	)
 
 	/** A BracketEnthusiast for the valid count not balanced input.

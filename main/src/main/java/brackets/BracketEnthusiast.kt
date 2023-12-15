@@ -5,7 +5,7 @@ import java.util.Stack
 /** A Bracket Enthusiast.
  * Determines the locations of all brackets of the given type in the string.
  */
-class BracketEnthusiast(
+open class BracketEnthusiast(
 	/** The Bracket Type.
 	 */
 	val bracketType: BracketType,
@@ -29,6 +29,15 @@ class BracketEnthusiast(
 	/** Whether the brackets are balanced.
 	 */
 	val areBracketsBalanced: Boolean
+
+	/** Secondary Constructor for Char Arrays.
+	 * @param bracketType The Bracket Type.
+	 * @param input The input character array.
+	 */
+	constructor(
+		bracketType: BracketType,
+		input: CharArray,
+	) : this(bracketType, java.lang.String.copyValueOf(input))
 
 	init {
 		val openList = ArrayList<Int>(4)
