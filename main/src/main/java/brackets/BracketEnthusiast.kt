@@ -5,7 +5,7 @@ import java.util.Stack
 /** A Bracket Enthusiast.
  * Determines the locations of all brackets of the given type in the string.
  */
-class BracketEnthusiast(
+open class BracketEnthusiast(
 	/** The Bracket Type.
 	 */
 	val bracketType: BracketType,
@@ -29,6 +29,15 @@ class BracketEnthusiast(
 	/** Whether the brackets are balanced.
 	 */
 	val areBracketsBalanced: Boolean
+
+	/** Secondary Constructor for Char Arrays.
+	 * @param bracketType The Bracket Type.
+	 * @param input The input character array.
+	 */
+	constructor(
+		bracketType: BracketType,
+		input: CharArray,
+	) : this(bracketType, java.lang.String.copyValueOf(input))
 
 	init {
 		val openList = ArrayList<Int>(4)
@@ -67,24 +76,16 @@ class BracketEnthusiast(
 	 */
 	private fun areBracketsBalanced()
 		: Boolean {
+		// Equal size of open and close arrays
 		if (!areBracketCountsValid)
 			return false
+		// If array sizes are zero, is balanced
 		if (openers == null)
 			return true
-		var openerIndex = 0
-		var closerIndex = 0
-		while (
-			openerIndex < openers.size &&
-			closerIndex < closers!!.size
-		) {
-			val opener = openers[openerIndex]
-			val closer = closers[closerIndex]
-			if (opener < closer) {
-				openerIndex++
-				closerIndex++
-			} else {
+		// Balance is ensured when all opens are before the corresponding close
+		for (index in openers.indices) {
+			if (openers[index] > closers!![index])
 				return false
-			}
 		}
 		return true
 	}

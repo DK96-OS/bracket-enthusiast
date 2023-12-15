@@ -74,11 +74,32 @@ class BracketEnthusiastBracketStringTest {
 		)
 	}
 
+	@Test
+	fun testAreBracketsBalanced_CharArray_BracketSample_ReturnsTrue() {
+		mInstance = BracketEnthusiast(
+			BracketType.CURLY, bracketSample.toCharArray()
+		)
+		assertTrue(
+			mInstance!!.areBracketsBalanced
+		)
+	}
+
 
 	@Test
 	fun testAreBracketsBalanced_BracketSample2_ReturnsTrue() {
 		mInstance = BracketEnthusiast(
 			BracketType.CURLY, bracketSample2
+		)
+		assertTrue(
+			mInstance!!.areBracketsBalanced
+		)
+	}
+
+
+	@Test
+	fun testAreBracketsBalanced_CharArray_BracketSample2_ReturnsTrue() {
+		mInstance = BracketEnthusiast(
+			BracketType.CURLY, bracketSample2.toCharArray()
 		)
 		assertTrue(
 			mInstance!!.areBracketsBalanced

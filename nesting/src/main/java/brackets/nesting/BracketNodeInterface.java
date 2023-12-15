@@ -1,11 +1,18 @@
 package brackets.nesting;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** A Bracket Node Tree Interface.
  * Each Node has an array of Sub-Nodes, which are randomly accessible.
  */
 public interface BracketNodeInterface {
+
+	/** Obtain the open and close bracket indices of this node.
+	 * @return An Array containing the two index values.
+	 */
+	@Nonnull
+	int[] getIndices();
 
 	/** Determine the number of direct internal nodes.
 	 * @return The count of nodes directly inside this node.
