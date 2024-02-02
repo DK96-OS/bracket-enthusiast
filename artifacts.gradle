@@ -1,4 +1,4 @@
-def commonArtifactVersion = "1.4"
+def commonArtifactVersion = "1.4.1"
 ext {
     artifactVersions = [
         main : commonArtifactVersion,
