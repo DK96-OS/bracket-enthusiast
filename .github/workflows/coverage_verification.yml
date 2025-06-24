@@ -1,15 +1,12 @@
-# This workflow verfies the code coverage minimum is met
-
+# This workflow verifies the code coverage minimum is met
 name: Coverage Verification
+permissions:
+  contents: read
 on:
   workflow_call:
-
 jobs:
   coverage-verification:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    
     name: Coverage Verification
     steps:
     - uses: actions/checkout@v4
@@ -18,7 +15,6 @@ jobs:
         java-version: 17
         distribution: 'temurin'
         cache: 'gradle'
-    
     - name: Verify Coverage
-      run: ./gradlew jacocoTestCoverageVerification --warn
+      run: ./gradlew jacocoTestCoverageVerification --warn --no-daemon
       timeout-minutes: 4

@@ -1,7 +1,5 @@
 # Create and Publish repository Packages
-
 name: Publish Packages for Release
-
 on:
   release:
     types: [ created ]
@@ -23,31 +21,32 @@ jobs:
           cache: 'gradle'
         
       - name: Check Build
-        run: ./gradlew check --warn
+        run: ./gradlew check --info --no-daemon
         timeout-minutes: 7
       
       - name: Generate JavaDoc
-        run: ./gradlew dokkaJavadoc --warn
+        run: ./gradlew dokkaJavadoc --info --no-daemon
         if: success()
         timeout-minutes: 3
       
       - name: Generate Markdown
-        run: ./gradlew dokkaGfm --warn
+        run: ./gradlew dokkaGfm --info --no-daemon
         if: success()
         timeout-minutes: 3
       
       - name: Publish Packages
-        run: ./gradlew publish --warn
+        run: ./gradlew publish --warn --no-daemon
         if: success()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        timeout-minutes: 4
       
       - name: Upload JavaDoc and Markdown
         uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
-          name: Bracket-JavaDocs
+          name: BracketEnthusiast-JavaDocs
           path: |
             /home/runner/work/bracket-enthusiast/bracket-enthusiast/main/build/dokka/
-          retention-days: 28
-        timeout-minutes: 1
+          retention-days: 90
+        timeout-minutes: 2

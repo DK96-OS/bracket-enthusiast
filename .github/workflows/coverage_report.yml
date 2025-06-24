@@ -19,7 +19,7 @@ jobs:
         cache: 'gradle'
     
     - name: Run JaCoCo Test Report
-      run: ./gradlew jacocoTestReport --warn
+      run: ./gradlew jacocoTestReport --warn --no-daemon
       timeout-minutes: 3
     
     - name: Upload Coverage Report
@@ -29,5 +29,5 @@ jobs:
         name: Coverage-Report
         path: |
           /home/runner/work/bracket-enthusiast/bracket-enthusiast/main/build/jacocoReport/
-        retention-days: 28
+        retention-days: 90
       timeout-minutes: 1
