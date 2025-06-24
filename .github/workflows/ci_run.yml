@@ -1,6 +1,7 @@
-# This workflow tests master branch pushes and pull requests
-
+# This workflow tests main branch pushes and pull requests
 name: CI Run
+permissions:
+  contents: read
 on:
   push:
     branches:
@@ -8,16 +9,14 @@ on:
   pull_request:
     branches:
       - main
-      - 'release'
-
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: read
-    
-    name: CI Run
+
+    name: CI Build
     steps:
     - uses: actions/checkout@v4
     - name: Set up Java
@@ -27,10 +26,13 @@ jobs:
         distribution: 'temurin'
         cache: 'gradle'
     - name: Build
-      run: ./gradlew assemble --info
+      run: ./gradlew assemble --info --no-daemon
       timeout-minutes: 4
   
   test:
+    permissions:
+      contents: read
+      packages: read
     needs: build
     uses: ./.github/workflows/test_report.yml
     if: success()
